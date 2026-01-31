@@ -92,8 +92,6 @@ class Api extends BaseController
 		$result = json_decode($response);
 		$data = [ 'id' => $user_info['access_id'], 'key' => $user_info['secret_key'], 'channel' => $post_info['channel'], 'number' => $cmboile, ];
 		$order_number = date('Ymd') . randomkeys(5, 'number');
-//		echo '<pre>';print_r(1111);echo '</pre>';
-//		echo '<pre>';print_r($result->data);echo '</pre>';exit;
 
 		if (isset($result->code) && ((string)$result->code === '200' || (string)$result->code === '1'))
 		{
@@ -128,7 +126,6 @@ class Api extends BaseController
 			}
 			BalanceRecord($user_info['id'], 1, $money, $order_number, '查询扣费');
 			QueryRecord::create([ 'uid' => $user_info['id'], 'mobile' => $post_info['mobile'], 'channel' => $post_info['channel'], 'extend' => $result->data, 'ip' => $_SERVER['REMOTE_ADDR']??null, 'trade_no' => $order_number, 'money' => $money, ]);
-//			echo '<pre>';print_r($result->data);echo '</pre>';exit;
 			return show(200, 'success', '查询成功' ,$result);
 		} else {
 			return show(200, 'success', '查询成功' ,$result);

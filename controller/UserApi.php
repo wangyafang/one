@@ -311,20 +311,14 @@ class UserApi
         ];
 
         $response = $http->post((string)url('/api/gateway')->domain(true), $params);
-//        echo '<pre>';print_r($response->httpCode());echo '</pre>';exit();
 //        $response = $http->post('http://222.217.95.171:88/api/gateway', $params);
         //return show(500, 'error', '查询成功');
         if ($response->httpCode() !== 200) {
             return show(500, 'error', '接口请求失败');
         }
         $result = $response->json(true);
-//        echo '<pre>';print_r($response);echo '</pre>';exit();
         $data = $result['data'] ?? $result;
         return show(200, 'success', '查询成功', $data);
-
-
-
-
     }
 
 
