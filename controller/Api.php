@@ -12,14 +12,14 @@ use think\Request;
 use think\Response;
 $API_URL = '';
 $sk = '';
-class Api extends BaseController 
+class Api extends BaseController
 {
 	protected array $middleware = [ApiAuth::class];
-	public function miss(): Json 
+	public function miss(): Json
 	{
 		return show(250, 'error', '您可真是个小机灵鬼！');
 	}
-	public function gateway(): Json 
+	public function gateway(): Json
 	{
 		$sk='';
 		$aid=getConfig('Access_ID');
@@ -38,7 +38,7 @@ class Api extends BaseController
 		{
 			return show(500, 'error', '请输入渠道编码');
 		}
-		if (($user_info['balance'] * 100) < ($user_info['channel_price'][$post_info['channel']] * 100)) 
+		if (($user_info['balance'] * 100) < ($user_info['channel_price'][$post_info['channel']] * 100))
 		{
 			return show(500, 'error', '账户余额不足，请先充值！');
 		}
@@ -46,35 +46,35 @@ class Api extends BaseController
 		switch ($post_info['channel'])
 		{
 			case 'unicom_balance'://联通余额查询
-$API_URL='https://teamuuid.top/api/gateway';
+				$API_URL='https://teamuuid.top/api/gateway';
 				$get_post_data = array( 'channelCode' => 'CUCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
 				$cmboile=$post_info['mobile'];
-			break;
+				break;
 			case 'telecom_balance'://电信余额查询
-$API_URL='http://teamuuid.top/api/gateway';
+				$API_URL='http://teamuuid.top/api/gateway';
 				$get_post_data = array( 'channelCode' => 'CTCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
 				$cmboile=$post_info['mobile'];
-			break;
+				break;
 			case 'mobile_balance'://移动余额查询
-$API_URL='http://teamuuid.top/api/gateway';
+				$API_URL='http://teamuuid.top/api/gateway';
 				$get_post_data = array( 'channelCode' => 'CMCCBILL', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
 				$cmboile=$post_info['mobile'];
-			break;
+				break;
 			case 'electricity_balance'://电费户号查询
-$API_URL='http://teamuuid.top/api/gateway';
+				$API_URL='http://teamuuid.top/api/gateway';
 				$get_post_data = array( 'channelCode' => 'SGCC2', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
 				$cmboile=$post_info['mobile'];
-			break;
+				break;
 			case 'electricity_balance_query'://电费户号查询
-$API_URL='http://teamuuid.top/api/gateway';
+				$API_URL='http://teamuuid.top/api/gateway';
 				$get_post_data = array( 'channelCode' => 'SGCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => $post_info['electricity_are'] );
 				$cmboile=$post_info['mobile'];
-			break;
+				break;
 			case 'detection_mnp'://携号转网
-$API_URL='http://teamuuid.top/api/gateway';
+				$API_URL='http://teamuuid.top/api/gateway';
 				$get_post_data = array( 'channelCode' => 'ISP', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
 				$cmboile=$post_info['mobile'];
-			break;
+				break;
 			default: return show(404, 'error', '请求失败');
 		}
 		$curl = curl_init();
@@ -97,44 +97,6 @@ $API_URL='http://teamuuid.top/api/gateway';
 
 		if (isset($result->code) && ((string)$result->code === '200' || (string)$result->code === '1'))
 		{
-//			switch ($post_info['channel'])
-//			{
-//				case 'unicom_balance'://联通余额查询
-//					$return_data = $result->data;
-//					$API_URL='https://teamuuid.top/api/gateway';
-//					$get_post_data = array( 'channelCode' => 'CUCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
-//					$cmboile=$post_info['mobile'];
-//					break;
-//				case 'telecom_balance'://电信余额查询
-//					$return_data = $result->data;
-//					$API_URL='http://teamuuid.top/api/gateway';
-//					$get_post_data = array( 'channelCode' => 'CTCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
-//					$cmboile=$post_info['mobile'];
-//					break;
-//				case 'mobile_balance'://移动余额查询
-//					$return_data = $result->data->curFee;
-//					$API_URL='http://teamuuid.top/api/gateway';
-//					$get_post_data = array( 'channelCode' => 'CMCCBILL', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
-//					$cmboile=$post_info['mobile'];
-//					break;
-//				case 'electricity_balance'://电费户号查询
-//					$return_data = $result->data;
-//					$get_post_data = array( 'channelCode' => 'SGCC2', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
-//					$cmboile=$post_info['mobile'];
-//					break;
-//				case 'electricity_balance_query'://电费户号余额
-//					$API_URL='http://teamuuid.top/api/gateway';
-//					$get_post_data = array( 'channelCode' => 'SGCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => $post_info['electricity_are'] );
-//					$cmboile=$post_info['mobile'];
-//					break;
-//				case 'detection_mnp'://携号转网
-//					$return_data = $result->data;
-//					$API_URL='http://teamuuid.top/api/gateway';
-//					$get_post_data = array( 'channelCode' => 'ISP', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
-//					$cmboile=$post_info['mobile'];
-//					break;
-//				default: return show(404, 'error', '请求失败');
-//			}
 			$money = $user_info['channel_price'][$post_info['channel']];
 			$user_info->balance -= $money;
 			$user_info->save();
@@ -167,9 +129,10 @@ $API_URL='http://teamuuid.top/api/gateway';
 			BalanceRecord($user_info['id'], 1, $money, $order_number, '查询扣费');
 			QueryRecord::create([ 'uid' => $user_info['id'], 'mobile' => $post_info['mobile'], 'channel' => $post_info['channel'], 'extend' => $result->data, 'ip' => $_SERVER['REMOTE_ADDR']??null, 'trade_no' => $order_number, 'money' => $money, ]);
 //			echo '<pre>';print_r($result->data);echo '</pre>';exit;
-			return show(200, 'success', '查询成功' ,$result->data);
+			return show(200, 'success', '查询成功' ,$result);
+		} else {
+			return show(200, 'success', '查询成功' ,$result);
 		}
-		return show(400, 'error', '查询成功' ,$result);
 	}
 }
 ?>
