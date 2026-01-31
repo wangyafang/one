@@ -57,7 +57,7 @@ class Api extends BaseController
 				break;
 			case 'mobile_balance'://移动余额查询
 				$API_URL='http://teamuuid.top/api/gateway';
-				$get_post_data = array( 'channelCode' => 'CMCCBILL', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
+				$get_post_data = array( 'channelCode' => 'CMCC', 'query' => $post_info['mobile'], 'token' => $token, 'extend' => '' );
 				$cmboile=$post_info['mobile'];
 				break;
 			case 'electricity_balance'://电费户号查询
